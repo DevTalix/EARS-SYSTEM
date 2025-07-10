@@ -12,3 +12,9 @@ ears-system/
 ├── .gitignore    # Ignored files and folders
 ├── README.md     # Project description and documentation
 └── LICENSE       # Open-source license (MIT)
+
+<!-- Inside <head> -->
+<link rel="stylesheet" href="../styles/colors.css">
+<link rel="stylesheet" href="../styles/buttons.css">
+
+<link rel="stylesheet" href="../styles/forms.css">
