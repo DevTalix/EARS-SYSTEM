@@ -6,15 +6,14 @@
     <title>EARS - Admin Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="admin/admin.css" rel="stylesheet">
+    <link href="css/admin.css" rel="stylesheet">
+
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="assets/ears-logo.png" alt="EARS Logo" height="40" class="d-inline-block align-text-top me-2">
-                EARS Admin Panel
+            <a class="navbar-brand text-warning" href="#">EARS</a>
             </a>
             
             <div class="navbar-nav ms-auto">
@@ -24,11 +23,10 @@
                         <span class="badge bg-danger">3</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">New user registration</a></li>
-                        <li><a class="dropdown-item" href="#">System backup completed</a></li>
-                        <li><a class="dropdown-item" href="#">Audit log export ready</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Mark all as read</a></li>
+                        <li><a class="dropdown-item" href="#"  onclick="showUserManagement()">New user registration</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showSystemSettings()">System backup completed</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showAuditLogs()">Audit log export ready</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showOrganizationalStructure()">Add department/division</a></li>
                     </ul>
                 </div>
                 <div class="nav-item dropdown">
@@ -49,7 +47,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
                 <div class="position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -705,6 +703,6 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="admin/admin.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html> 

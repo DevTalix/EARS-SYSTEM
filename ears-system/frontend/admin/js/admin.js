@@ -135,9 +135,9 @@ function loadRecentActivity() {
     const activities = [
         {
             time: '2 minutes ago',
-            user: 'John Doe',
+            user: 'Tendo',
             action: 'created new user',
-            details: 'Added intern: Sarah Johnson'
+            details: 'Added intern: Taliq'
         },
         {
             time: '5 minutes ago',
@@ -147,9 +147,9 @@ function loadRecentActivity() {
         },
         {
             time: '10 minutes ago',
-            user: 'Jane Smith',
+            user: 'Wilber',
             action: 'assigned supervisor',
-            details: 'Assigned Mike Wilson to 3 interns'
+            details: 'Assigned Aron to 3 interns'
         },
         {
             time: '15 minutes ago',
@@ -185,9 +185,9 @@ function loadUsers() {
     users = [
         {
             id: 1,
-            firstname: 'John',
-            lastname: 'Doe',
-            email: 'john.doe@kcca.go.ug',
+            firstname: 'Aron',
+            lastname: 'L',
+            email: 'aron.L@kcca.go.ug',
             phone: '+256 701 234 567',
             role: 'admin',
             department: 'IT',
@@ -196,23 +196,45 @@ function loadUsers() {
         },
         {
             id: 2,
-            firstname: 'Sarah',
-            lastname: 'Johnson',
-            email: 'sarah.johnson@kcca.go.ug',
+            firstname: 'Arafat',
+            lastname: 'K',
+            email: 'arafat.k@kcca.go.ug',
             phone: '+256 702 345 678',
             role: 'intern',
-            department: 'Finance',
+            department: 'Legal',
             status: 'active',
             lastLogin: '2024-01-15 09:15:00'
         },
         {
             id: 3,
-            firstname: 'Mike',
-            lastname: 'Wilson',
-            email: 'mike.wilson@kcca.go.ug',
+            firstname: 'Benjamin',
+            lastname: 'N',
+            email: 'benjamin.n@kcca.go.ug',
             phone: '+256 703 456 789',
             role: 'supervisor',
             department: 'Finance',
+            status: 'active',
+            lastLogin: '2024-01-15 08:45:00'
+        },
+        {
+            id: 3,
+            firstname: 'Calvin',
+            lastname: 'M',
+            email: 'calvin.m@kcca.go.ug',
+            phone: '+256 703 456 789',
+            role: 'supervisor',
+            department: 'Revenue',
+            status: 'active',
+            lastLogin: '2024-01-15 08:45:00'
+        },
+        {
+            id: 3,
+            firstname: 'Norman',
+            lastname: 'D',
+            email: 'norman.d@kcca.go.ug',
+            phone: '+256 703 456 789',
+            role: 'supervisor',
+            department: 'IT',
             status: 'active',
             lastLogin: '2024-01-15 08:45:00'
         }
@@ -454,17 +476,17 @@ function resetPassword(userId) {
 function loadOrganizationalStructure() {
     // Simulate API call to get organizational structure
     divisions = [
-        { id: 1, name: 'Finance Division', director: 'John Smith' },
-        { id: 2, name: 'Engineering Division', director: 'Jane Doe' },
-        { id: 3, name: 'Human Resources Division', director: 'Mike Johnson' }
+        { id: 1, name: 'Finance Division', director: 'Norman' },
+        { id: 2, name: 'Engineering Division', director: 'Kawuma' },
+        { id: 3, name: 'Human Resources Division', director: 'Nabwire' }
     ];
     
     departments = [
-        { id: 1, name: 'Accounting', division: 'Finance Division', manager: 'Sarah Wilson' },
-        { id: 2, name: 'Budgeting', division: 'Finance Division', manager: 'Tom Brown' },
-        { id: 3, name: 'Civil Engineering', division: 'Engineering Division', manager: 'Lisa Green' },
-        { id: 4, name: 'Electrical Engineering', division: 'Engineering Division', manager: 'David Black' },
-        { id: 5, name: 'Recruitment', division: 'Human Resources Division', manager: 'Anna White' }
+        { id: 1, name: 'Accounting', division: 'Finance Division', manager: 'Senoga' },
+        { id: 2, name: 'Budgeting', division: 'Finance Division', manager: 'Katumwa' },
+        { id: 3, name: 'Civil Engineering', division: 'Engineering Division', manager: 'Mirembe' },
+        { id: 4, name: 'Electrical Engineering', division: 'Engineering Division', manager: 'Namazi' },
+        { id: 5, name: 'Recruitment', division: 'Human Resources Division', manager: 'Atwine' }
     ];
     
     renderOrganizationalStructure();
@@ -542,9 +564,9 @@ function loadSupervisorAssignments() {
     
     // Load current assignments
     const assignments = [
-        { intern: 'Sarah Johnson', supervisor: 'Mike Wilson', department: 'Finance', date: '2024-01-10' },
-        { intern: 'David Brown', supervisor: 'Lisa Green', department: 'Engineering', date: '2024-01-08' },
-        { intern: 'Emma Davis', supervisor: 'Anna White', department: 'HR', date: '2024-01-05' }
+        { intern: 'Tracy', supervisor: 'Aron', department: 'Finance', date: '2024-01-10' },
+        { intern: 'Davis', supervisor: 'Calvin', department: 'Engineering', date: '2024-01-08' },
+        { intern: 'Mutoni', supervisor: 'Norman', department: 'HR', date: '2024-01-05' }
     ];
     renderCurrentAssignments(assignments);
 }
@@ -639,15 +661,15 @@ function loadAuditLogs() {
         {
             id: 1,
             timestamp: '2024-01-15 10:30:00',
-            user: 'Admin',
+            user: 'Tendo',
             action: 'create',
-            details: 'Added new user: Sarah Johnson',
+            details: 'Added new user: Taliq',
             ipAddress: '192.168.1.100'
         },
         {
             id: 2,
             timestamp: '2024-01-15 10:25:00',
-            user: 'Mike Wilson',
+            user: 'Wilber',
             action: 'login',
             details: 'User logged in successfully',
             ipAddress: '192.168.1.101'
@@ -655,7 +677,7 @@ function loadAuditLogs() {
         {
             id: 3,
             timestamp: '2024-01-15 10:20:00',
-            user: 'Admin',
+            user: 'Tendo',
             action: 'update',
             details: 'Updated system settings',
             ipAddress: '192.168.1.100'
@@ -663,7 +685,7 @@ function loadAuditLogs() {
         {
             id: 4,
             timestamp: '2024-01-15 10:15:00',
-            user: 'Sarah Johnson',
+            user: 'Wilber',
             action: 'logout',
             details: 'User logged out',
             ipAddress: '192.168.1.102'
