@@ -1,0 +1,136 @@
+/* EARS Admin Panel CSS - HR Dashboard Adaptation */
+:root {
+    --kcca-red: #E30613;
+    --kcca-green: #008540;
+    --kcca-yellow: #FFD100;
+    --kcca-black: #212529; /* Using Bootstrap's dark gray for black */
+    --kcca-white: #FFFFFF;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--gray-100);
+    font-size: 0.9rem;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 56px; /* Height of the navbar */
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 20px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    background-color: var(--kcca-black);
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: var(--gray-300);
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar .nav-link:hover {
+    color: var(--kcca-yellow);
+}
+
+.sidebar .nav-link.active {
+    color: var(--kcca-white);
+    background-color: var(--kcca-red);
+}
+
+.sidebar .nav-link i {
+    margin-right: 0.75rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* Main Content */
+main {
+    padding-top: 1.5rem;
+}
+
+/* Statistics Cards */
+.card {
+    border: none;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    border-radius: 0.35rem;
+}
+
+.card-header {
+    background-color: var(--kcca-white);
+    border-bottom: 1px solid var(--gray-200);
+    font-weight: 600;
+}
+
+.border-left-primary { border-left: 0.25rem solid var(--kcca-red) !important; }
+.border-left-success { border-left: 0.25rem solid var(--kcca-green) !important; }
+.border-left-info { border-left: 0.25rem solid var(--kcca-yellow) !important; }
+.border-left-warning { border-left: 0.25rem solid #f6c23e !important; }
+
+.text-primary { color: var(--kcca-red) !important; }
+.text-success { color: var(--kcca-green) !important; }
+.text-info { color: var(--kcca-yellow) !important; }
+.text-warning { color: #f6c23e !important; }
+
+.text-xs { font-size: .7rem; }
+.text-gray-300 { color: #dddfeb !important; }
+.text-gray-800 { color: #5a5c69 !important; }
+
+/* Tables */
+.table thead {
+    background-color: var(--gray-800);
+    color: var(--kcca-white);
+}
+
+.table thead th {
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+.table thead th:hover {
+    background-color: var(--gray-700);
+}
+.table thead th i {
+    margin-left: 0.5rem;
+    color: var(--gray-500);
+}
+
+/* Status Badges */
+.badge.status-approved {
+    color: #fff;
+    background-color: var(--kcca-green) !important;
+}
+.badge.status-pending {
+    color: var(--kcca-black);
+    background-color: var(--kcca-yellow) !important;
+}
+.badge.status-rejected {
+    color: #fff;
+    background-color: var(--kcca-red) !important;
+}
+
+/* Forms */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--kcca-red);
+    box-shadow: 0 0 0 0.2rem rgba(227, 6, 19, 0.25);
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    main {
+        margin-top: 56px; /* Height of the navbar */
+    }
+}
