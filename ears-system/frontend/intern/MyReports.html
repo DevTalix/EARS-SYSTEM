@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reports</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+      body { font-family: 'Segoe UI', sans-serif; }
+      .sidebar { height: 100vh; background-color: #212529; color: white; padding-top: 1rem; position: fixed; width: 250px; z-index: 1045; }
+      .sidebar .nav-link { color: #f8f9fa; font-size: 0.95rem; }
+      .sidebar .nav-link:hover, .sidebar .nav-link.active { background-color: #343a40; color: #FFD100; }
+      .sidebar i { margin-right: 8px; }
+      .content { margin-left: 250px; padding: 2rem; }
+      @media (max-width: 991.98px) { .sidebar { display: none; } .content { margin-left: 0; } .mobile-sidebar-toggle { display: block; } }
+      @media (min-width: 992px) { .mobile-sidebar-toggle { display: none; } }
+      @media (max-width: 575.98px) { .btn { width: 100% !important; margin-bottom: 0.5rem; } .modal-footer .btn { margin-bottom: 0; } }
+    </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark d-lg-none">
+    <div class="container-fluid">
+      <button class="btn btn-dark mobile-sidebar-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
+        <i class="bi bi-list" style="font-size: 1.5rem;"></i>
+      </button>
+      <span class="navbar-brand mb-0 h1">My Reports</span>
+    </div>
+  </nav>
+  <div class="sidebar d-none d-lg-flex flex-column">
+    <div class="px-3 mb-4"><h5 class="text-warning">Intern</h5></div>
+    <ul class="nav flex-column px-3">
+      <li class="nav-item"><a class="nav-link" href="Dashboard.html"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="SubmitReport.html"><i class="bi bi-journal-plus"></i> Submit Weekly Report</a></li>
+      <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-journal-text"></i> My Reports</a></li>
+      <li class="nav-item"><a class="nav-link" href="Notifications.html"><i class="bi bi-bell"></i> Notifications 🔔</a></li>
+      <li class="nav-item"><a class="nav-link" href="Profile.html"><i class="bi bi-person-circle"></i> Profile</a></li>
+      <li class="nav-item mt-auto"><a class="nav-link text-danger" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+    </ul>
+  </div>
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title text-warning" id="mobileSidebarLabel">Intern</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      <ul class="nav flex-column px-3">
+        <li class="nav-item"><a class="nav-link" href="Dashboard.html"><i class="bi bi-house-door-fill"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="SubmitReport.html"><i class="bi bi-journal-plus"></i> Submit Weekly Report</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#"><i class="bi bi-journal-text"></i> My Reports</a></li>
+        <li class="nav-item"><a class="nav-link" href="Notifications.html"><i class="bi bi-bell"></i> Notifications 🔔</a></li>
+        <li class="nav-item"><a class="nav-link" href="Profile.html"><i class="bi bi-person-circle"></i> Profile</a></li>
+        <li class="nav-item mt-auto"><a class="nav-link text-danger" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="content">
+    <h3 class="mb-4">My Reports</h3>
+    
+    <!-- Filters -->
+    <form class="row mb-3 g-2">
+      <div class="col-md-3 mb-2">
+        <select class="form-select" id="filterStatus">
+          <option value="">All Status</option>
+          <option value="Draft">Draft</option>
+          <option value="Submitted">Submitted</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+      </div>
+      <div class="col-md-3 mb-2">
+        <select class="form-select" id="filterWeek">
+          <option value="">All Weeks</option>
+          <option>Week 1</option>
+          <option>Week 2</option>
+          <option>Week 3</option>
+          <option>Week 4</option>
+        </select>
+      </div>
+      <div class="col-md-3 mb-2">
+        <input type="date" class="form-control" id="filterDate" placeholder="Filter by date">
+      </div>
+      <div class="col-md-3 mb-2">
+        <button type="button" class="btn btn-outline-secondary w-100" id="clearFilters">
+          <i class="bi bi-x-circle me-1"></i> Clear Filters
+        </button>
+      </div>
+    </form>
+
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Status</th>
+            <th>Submission Date</th>
+            <th>Last Updated</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Week 4</td>
+            <td><span class="badge bg-secondary">Draft</span></td>
+            <td>-</td>
+            <td>2024-06-20 14:30</td>
+            <td>
+              <button class="btn btn-sm btn-primary me-1 view-btn" data-week="Week 4" data-status="Draft" data-content="This is a draft report for Week 4...">View</button>
+              <button class="btn btn-sm btn-warning edit-btn" data-week="Week 4">Edit</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Week 3</td>
+            <td><span class="badge bg-success">Approved</span></td>
+            <td>2024-06-17</td>
+            <td>2024-06-19 09:15</td>
+            <td>
+              <button class="btn btn-sm btn-primary view-btn" data-week="Week 3" data-status="Approved" data-content="This report was approved by the supervisor...">View</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Week 2</td>
+            <td><span class="badge bg-warning text-dark">Submitted</span></td>
+            <td>2024-06-10</td>
+            <td>2024-06-10 16:45</td>
+            <td>
+              <button class="btn btn-sm btn-primary view-btn" data-week="Week 2" data-status="Submitted" data-content="This report is currently under review...">View</button>
+            </td>
+          </tr>
+          <tr>
+            <td>Week 1</td>
+            <td><span class="badge bg-danger">Rejected</span></td>
+            <td>2024-06-03</td>
+            <td>2024-06-05 11:20</td>
+            <td>
+              <button class="btn btn-sm btn-primary me-1 view-btn" data-week="Week 1" data-status="Rejected" data-content="This report was rejected due to insufficient detail...">View</button>
+              <button class="btn btn-sm btn-warning edit-btn" data-week="Week 1">Edit</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Report View Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reportModalLabel">Report Details</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Week:</label>
+              <span id="modalWeek">-</span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Status:</label>
+              <span id="modalStatus">-</span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Submission Date:</label>
+              <span id="modalSubmissionDate">-</span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Report Content:</label>
+              <div class="border p-3 bg-light text-dark" id="modalReportContent">-</div>
+            </div>
+            <div class="mb-3 d-none" id="rejectionReasonBox">
+              <label class="form-label fw-bold text-danger">Rejection Reason:</label>
+              <div class="border p-2 bg-light text-dark" id="modalRejectionReason">-</div>
+            </div>
+            <div class="mb-3 d-none" id="supervisorCommentBox">
+              <label class="form-label fw-bold text-primary">Supervisor Comment:</label>
+              <div class="border p-2 bg-light text-dark" id="modalSupervisorComment">-</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterStatus = document.getElementById('filterStatus');
+      const filterWeek = document.getElementById('filterWeek');
+      const filterDate = document.getElementById('filterDate');
+      const clearFiltersBtn = document.getElementById('clearFilters');
+      const viewBtns = document.querySelectorAll('.view-btn');
+      const editBtns = document.querySelectorAll('.edit-btn');
+      const reportModal = new bootstrap.Modal(document.getElementById('reportModal'));
+
+      // Filter functionality
+      function applyFilters() {
+        const statusFilter = filterStatus.value.toLowerCase();
+        const weekFilter = filterWeek.value.toLowerCase();
+        const dateFilter = filterDate.value;
+        
+        const rows = document.querySelectorAll('tbody tr');
+        
+        rows.forEach(row => {
+          const status = row.querySelector('.badge').textContent.toLowerCase();
+          const week = row.cells[0].textContent.toLowerCase();
+          const submissionDate = row.cells[2].textContent;
+          
+          const statusMatch = !statusFilter || status.includes(statusFilter);
+          const weekMatch = !weekFilter || week.includes(weekFilter);
+          const dateMatch = !dateFilter || submissionDate === dateFilter || submissionDate === '-';
+          
+          if (statusMatch && weekMatch && dateMatch) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      }
+
+      filterStatus.addEventListener('change', applyFilters);
+      filterWeek.addEventListener('change', applyFilters);
+      filterDate.addEventListener('change', applyFilters);
+
+      clearFiltersBtn.addEventListener('click', function() {
+        filterStatus.value = '';
+        filterWeek.value = '';
+        filterDate.value = '';
+        applyFilters();
+      });
+
+      // View report functionality
+      viewBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const week = this.getAttribute('data-week');
+          const status = this.getAttribute('data-status');
+          const content = this.getAttribute('data-content');
+          
+          document.getElementById('modalWeek').textContent = week;
+          document.getElementById('modalStatus').textContent = status;
+          
+          // Set submission date based on week
+          const submissionDates = {
+            'Week 1': '2024-06-03',
+            'Week 2': '2024-06-10',
+            'Week 3': '2024-06-17',
+            'Week 4': '-'
+          };
+          document.getElementById('modalSubmissionDate').textContent = submissionDates[week] || '-';
+          
+          document.getElementById('modalReportContent').textContent = content;
+          
+          // Show/hide rejection reason and supervisor comment based on status
+          const rejectionReasonBox = document.getElementById('rejectionReasonBox');
+          const supervisorCommentBox = document.getElementById('supervisorCommentBox');
+          
+          if (status === 'Rejected') {
+            rejectionReasonBox.classList.remove('d-none');
+            supervisorCommentBox.classList.add('d-none');
+            document.getElementById('modalRejectionReason').textContent = 'Insufficient detail in activities description. Please provide more specific information about your tasks and accomplishments.';
+          } else if (status === 'Approved') {
+            rejectionReasonBox.classList.add('d-none');
+            supervisorCommentBox.classList.remove('d-none');
+            document.getElementById('modalSupervisorComment').textContent = 'Excellent work this week! Your report shows good progress and clear understanding of the tasks. Keep up the good work!';
+          } else {
+            rejectionReasonBox.classList.add('d-none');
+            supervisorCommentBox.classList.add('d-none');
+          }
+          
+          reportModal.show();
+        });
+      });
+
+      // Edit report functionality
+      editBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const week = this.getAttribute('data-week');
+          if (confirm(`Do you want to edit ${week} report?`)) {
+            // Redirect to submit report page with pre-filled data
+            window.location.href = 'SubmitReport.html';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
