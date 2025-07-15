@@ -1,6 +1,9 @@
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="date"],
+input[type="time"],
+
 textarea,
 select {
   border: 1px solid #ccc;
@@ -23,6 +26,9 @@ label {
   font-weight: 600;
   margin-bottom: 0.4rem;
   color: var(--kcca-black);
+}
+.hidden {
+  display: none;
 }
 
 .form-error {

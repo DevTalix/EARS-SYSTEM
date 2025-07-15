@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internship Daily Attendance Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/buttons.css">
+  <link rel="stylesheet" href="../styles/forms.css">
+  <link rel="stylesheet" href="../admin/css/admin.css">
+</head>
+<body>
+
+  <em><h2 style="color: var(--kcca-green);">INTERNSHIP DAILY ATTENDANCE FORM</h2></em>
+<div class="col-lg-4 mx-auto">
+    <div class="card shadow mb-4">
+       <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold" style="color: var(--kcca-yellow);">FILL YOUR DETAILS</h3>
+    </div>
+    
+    <div class="card-body">
+        <div>
+            <label for="directorate">DIRECTORATE:</label>
+            <input type="text" id="directorate" name="directorate" required>
+        </div>
+        <div>
+            <label for="department">DEPARTMENT/UNIT/DIVISION:</label>
+            <input type="text" id="department" name="department" required>
+        </div>
+        <div>
+            <label for="course">COURSE NAME IN FULL:</label>
+            <input type="text" id="course" name="course" required>
+        </div>
+        <div>
+            <label for="university">UNIVERSITY:</label>
+            <input type="text" id="university" name="university" required>
+        </div>
+        <div>
+            <label for="week">WEEK NO:</label>
+            <input type="text" id="week" name="week" required>
+        </div>                     
+              </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn-kcca btn-outline-kcca" onclick="ShowFormSection()">Select Next</button>
+
+    <div id="formSection" class="hidden">       
+        <form>
+                
+                <div>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+                </div>
+
+                <div>
+                <label for="activity">Activity Performed:</label><br>
+                <textarea id="activity" name="activity" rows="4" cols="50" required></textarea>
+                </div>
+
+                <div>
+                <label for="supervisor">Supervisor:</label>
+                <input type="text" id="supervisor" name="supervisor" required>
+                </div>
+
+                <div>
+                <label for="timeIn">Time In:</label>
+                <input type="time" id="timeIn" name="timeIn" required>
+                </div>
+
+                <div>
+                <label for="timeOut">Time Out:</label>
+                <input type="time" id="timeOut" name="timeOut" required>
+                </div>
+         </form>
+         <button class="btn-kcca btn-outline-kcca" onclick="showUpload()">Select Next For PDF Upload</button>
+
+</div>
+
+
+           
+                <div id="uploadSection" class="hidden">
+                <div>
+                    <label for="pdfUpload">Upload Attendance Sheet (PDF):</label>
+                    <input type="file" id="pdfUpload" name="pdfUpload" accept="application/pdf" required>
+                    <button class="btn-kcca btn-outline-kcca" >Submit</button>
+                </div>
+            
+
+  
+  <script>
+    function ShowFormSection()  {
+      document.getElementById('formSection').classList.remove('hidden');
+    }
+    function showUpload() {
+      document.getElementById('uploadSection').classList.remove('hidden');
+    }
+
+    document.getElementById('attendanceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Form submitted successfully!');
+      //BACKEND LOGIC
+    });
+  </script>
+
+</body>
+</html>
