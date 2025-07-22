@@ -1,0 +1,1157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EARS - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --kcca-red: #E30613;
+            --kcca-green: #008540;
+            --kcca-yellow: #FFD100;
+            --kcca-black: #000000;
+            --kcca-white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .offcanvas-start {
+            width: 250px;
+        }
+
+        .sidebar-nav .nav-link {
+            color: #f8f9fa;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .sidebar-nav .nav-link:hover,
+        .sidebar-nav .nav-link.active {
+            background-color: #343a40;
+            color: var(--kcca-yellow);
+        }
+        .sidebar-nav i {
+            margin-right: 8px;
+        }
+
+        .content {
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            padding: 1.25rem;
+            border-radius: 8px;
+            color: white;
+        }
+        .stat-card.primary { background-color: var(--kcca-red); }
+        .stat-card.success { background-color: var(--kcca-green); }
+        .stat-card.warning { background-color: var(--kcca-yellow); color: var(--kcca-black); }
+        .stat-card.info { background-color: #0dcaf0; }
+
+        .user-table {
+            --table-border: #e9ecef;
+            --table-hover-bg: rgba(0, 133, 64, 0.05);
+        }
+        .user-table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            border-bottom-width: 2px;
+        }
+        .user-table td {
+            vertical-align: middle;
+            padding: 0.75rem;
+        }
+        .user-table tr:hover {
+            background-color: var(--table-hover-bg);
+        }
+
+        .badge-status {
+            padding: 0.35em 0.65em;
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+        .badge-active {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+        .badge-pending {
+            background-color: #fff3cd;
+            color: #664d03;
+        }
+        .badge-inactive {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--kcca-green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        @media (min-width: 992px) {
+            .content.sidebar-open {
+                margin-left: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+                <i class="bi bi-list fs-3"></i>
+            </button>
+            <span class="navbar-brand mb-0 h1 ms-3">Admin Dashboard</span>
+            <div class="d-flex align-items-center">
+                <span class="text-white me-2">Last updated: <span id="lastSync">Just now</span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="sidebar">
+        <div class="offcanvas-header border-bottom border-secondary">
+            <div class="d-flex align-items-center">
+                <img src="https://saketgroupltd.com/wp-content/uploads/2023/09/4-300x300.png" alt="KCCA Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                <h5 class="offcanvas-title fw-bold mb-0" style="color: #008540; letter-spacing: 1px;">EARS</h5>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <nav class="nav flex-column sidebar-nav px-3">
+                <a class="nav-link  d-flex align-items-center mb-2" href="#dashboard">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+                <a class="nav-link d-flex align-items-center mb-2" href="user-Management.html">
+                    <i class="bi bi-people"></i> User Management
+                <a class="nav-link d-flex align-items-center mb-2" href="audit-logs.html">
+    <i class="bi bi-journal-text"></i> Audit Logs
+                </a>
+
+                <a class="nav-link text- d-flex align-items-center mt-auto" href="login.html" id="logoutLink">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="content" id="mainContent">
+        <div class="container-fluid">
+            <!-- Dashboard Section -->
+            <section id="dashboard">
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="stat-card primary">
+                            <h6 class="text-white">Total Users</h6>
+                            <h3 id="totalUsers">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card success">
+                            <h6 class="text-white">Active Interns</h6>
+                            <h3 id="activeInterns">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card warning">
+                            <h6>Pending Approvals</h6>
+                            <h3 id="pendingApprovals">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card info">
+                            <h6 class="text-white">System Health</h6>
+                            <h3>100%</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Management Section -->
+            <section class="dashboard-card" id="userManagement">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5><i class="bi bi-people me-2"></i>User Management</h5>
+                    <div>
+                        <button class="btn btn-sm btn-primary me-2" id="addUserBtn">
+                            <i class="bi bi-plus-circle"></i> Add User
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary" id="refreshUsers">
+                            <i class="bi bi-arrow-repeat"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle user-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Department Management Section -->
+            <section class="dashboard-card" id="departmentManagement">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5><i class="bi bi-building me-2"></i>Department Management</h5>
+                    <div>
+                        <button class="btn btn-sm btn-primary me-2" id="addDepartmentBtn">
+                            <i class="bi bi-plus-circle"></i> Add Department
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Division</th>
+                                <th>Directorate</th>
+                                <th>Department</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="departmentsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Audit Logs Section -->
+            <section class="dashboard-card" id="auditLogs">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5><i class="bi bi-journal-text me-2"></i>Audit Logs</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="bi bi-filter"></i> Filter
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Last 7 Days</a></li>
+                            <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
+                            <li><a class="dropdown-item" href="#">All Time</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditLogsTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="userName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="userEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-select" id="userRole" required>
+                                <option value="">Select Role</option>
+                                <option value="intern">Intern</option>
+                                <option value="supervisor">Supervisor</option>
+                                <option value="hr">HR</option>
+                                <option value="admin">System Admin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Department</label>
+                            <select class="form-select" id="userDepartment" required>
+                                <option value="">Select Department</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Supervisor</label>
+                            <select class="form-select" id="userSupervisor">
+                                <option value="">Select Supervisor (if intern)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Initial Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="userPassword" required>
+                                <button class="btn btn-outline-secondary" type="button" id="generatePassword">
+                                    <i class="bi bi-arrow-repeat"></i> Generate
+                                </button>
+                            </div>
+                            <small class="text-muted">User will change password on first login</small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="userForm" class="btn btn-primary">Create User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+                        <input type="hidden" id="editUserId">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="editUserName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editUserEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-select" id="editUserRole" required>
+                                <option value="">Select Role</option>
+                                <option value="intern">Intern</option>
+                                <option value="supervisor">Supervisor</option>
+                                <option value="hr">HR</option>
+                                <option value="admin">System Admin</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Department</label>
+                            <select class="form-select" id="editUserDepartment" required>
+                                <option value="">Select Department</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Supervisor</label>
+                            <select class="form-select" id="editUserSupervisor">
+                                <option value="">Select Supervisor (if intern)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-select" id="editUserStatus" required>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="editUserForm" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-outline-danger" id="resetPasswordBtn">
+                        <i class="bi bi-key"></i> Reset Password
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Department Modal -->
+    <div class="modal fade" id="addDepartmentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Department</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="departmentForm">
+                        <div class="mb-3">
+                            <label class="form-label">Division</label>
+                            <input type="text" class="form-control" id="divisionName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Directorate</label>
+                            <input type="text" class="form-control" id="directorateName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Department</label>
+                            <input type="text" class="form-control" id="departmentName" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="departmentForm" class="btn btn-primary">Add Department</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+     
+document.addEventListener('DOMContentLoaded', function() {
+    // Get user data from session
+    const user = JSON.parse(sessionStorage.getItem('currentUser'));
+    if(!user || user.role !== 'admin') {
+        window.location.href = '../login.html';
+    }
+
+    // Load users
+    loadUsers();
+    
+    // Load audit logs
+    loadAuditLogs();
+    
+    // Set up event listeners for user management
+    document.getElementById('addUserForm').addEventListener('submit', addUser);
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        loadUsers();
+    });
+});
+
+function loadUsers() {
+    const searchTerm = document.getElementById('userSearch').value;
+    const roleFilter = document.getElementById('roleFilter').value;
+    
+    let url = 'http://localhost/ears-system/backend/api/users.php?';
+    if(searchTerm) url += `search=${encodeURIComponent(searchTerm)}&`;
+    if(roleFilter) url += `role=${roleFilter}&`;
+    
+    fetch(url, {
+        headers: {
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const tableBody = document.getElementById('usersTable').querySelector('tbody');
+        tableBody.innerHTML = '';
+        
+        data.records.forEach(user => {
+                        const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="user-avatar">${user.full_name.charAt(0)}</div>
+                        <div>${user.full_name}</div>
+                    </div>
+                </td>
+                <td>${user.email}</td>
+                <td><span class="badge ${getRoleBadgeClass(user.role)}">${formatRole(user.role)}</span></td>
+                <td>${user.division || '-'}</td>
+                <td>${user.directorate || '-'}</td>
+                <td>${user.department || '-'}</td>
+                <td>${user.supervisor || '-'}</td>
+                <td><span class="badge ${user.is_active ? 'bg-success' : 'bg-secondary'}">${user.is_active ? 'Active' : 'Inactive'}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary me-1" onclick="editUser(${user.id})">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function loadAuditLogs() {
+    fetch('http://localhost/ears-system/backend/api/admin/audit_logs.php', {
+        headers: {
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const tableBody = document.getElementById('auditLogsTable').querySelector('tbody');
+        tableBody.innerHTML = '';
+        
+        data.records.forEach(log => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${log.action}</td>
+                <td>${log.user_name}</td>
+                <td>${log.entity_type}</td>
+                <td>${log.entity_id}</td>
+                <td>${new Date(log.created_at).toLocaleString()}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function addUser(e) {
+    e.preventDefault();
+    
+    const formData = {
+        full_name: document.getElementById('addFullName').value,
+        email: document.getElementById('addEmail').value,
+        password: document.getElementById('addPassword').value,
+        role: document.getElementById('addRole').value,
+        division_id: document.getElementById('addDivision').value,
+        directorate_id: document.getElementById('addDirectorate').value,
+        department_id: document.getElementById('addDepartment').value,
+        supervisor_id: document.getElementById('addSupervisor').value
+    };
+
+    fetch('http://localhost/ears-system/backend/api/users.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.message === "User was created.") {
+            alert('User created successfully!');
+            $('#addUserModal').modal('hide');
+            document.getElementById('addUserForm').reset();
+            loadUsers();
+        } else {
+            alert('Failed to create user: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while creating the user.');
+    });
+}
+
+function editUser(userId) {
+    fetch(`http://localhost/ears-system/backend/api/users.php?id=${userId}`, {
+        headers: {
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+        }
+    })
+    .then(response => response.json())
+    .then(user => {
+        document.getElementById('editUserId').value = user.id;
+        document.getElementById('editFullName').value = user.full_name;
+        document.getElementById('editEmail').value = user.email;
+        document.getElementById('editRole').value = user.role;
+        document.getElementById('editDivision').value = user.division_id;
+        document.getElementById('editDirectorate').value = user.directorate_id;
+        document.getElementById('editDepartment').value = user.department_id;
+        document.getElementById('editSupervisor').value = user.supervisor_id;
+        document.getElementById('editActive').checked = user.is_active;
+        
+        $('#editUserModal').modal('show');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to load user details.');
+    });
+}
+
+function deleteUser(userId) {
+    if(confirm('Are you sure you want to delete this user?')) {
+        fetch(`http://localhost/ears-system/backend/api/users.php?id=${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.message === "User was deleted.") {
+                alert('User deleted successfully!');
+                loadUsers();
+            } else {
+                alert('Failed to delete user: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the user.');
+        });
+    }
+}
+
+function formatRole(role) {
+    const roles = {
+        'intern': 'Intern',
+        'supervisor': 'Supervisor',
+        'hr': 'HR',
+        'admin': 'Admin'
+    };
+    return roles[role] || role;
+}
+
+function getRoleBadgeClass(role) {
+    const classes = {
+        'intern': 'bg-info text-dark',
+        'supervisor': 'bg-primary',
+        'hr': 'bg-warning text-dark',
+        'admin': 'bg-danger'
+    };
+    return classes[role] || 'bg-secondary';
+}
+        // Global data
+        let users = [];
+        let departments = [];
+        let auditLogs = [];
+        let supervisors = [];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadInitialData();
+            setupEventListeners();
+        });
+
+        function loadInitialData() {
+            // Simulate API calls
+            setTimeout(() => {
+                // Load departments
+                departments = [
+                    { id: 1, division: 'ICT', directorate: 'Digital Services', department: 'Software Development' },
+                    { id: 2, division: 'ICT', directorate: 'Digital Services', department: 'Hardware Maintenance' },
+                    { id: 3, division: 'Finance', directorate: 'Accounting', department: 'Payroll' },
+                    { id: 4, division: 'Health', directorate: 'Public Health', department: 'Medical Services' }
+                ];
+                
+                // Load users
+                users = [
+                    {
+                        id: 1,
+                        name: 'John Doe',
+                        email: 'john.doe@kcca.go.ug',
+                        role: 'intern',
+                        department: 'Software Development',
+                        supervisor: 3,
+                        status: 'active'
+                    },
+                    {
+                        id: 2,
+                        name: 'Sarah Smith',
+                        email: 'sarah.smith@kcca.go.ug',
+                        role: 'supervisor',
+                        department: 'Software Development',
+                        status: 'active'
+                    },
+                    {
+                        id: 3,
+                        name: 'Michael Brown',
+                        email: 'michael.brown@kcca.go.ug',
+                        role: 'supervisor',
+                        department: 'Hardware Maintenance',
+                        status: 'active'
+                    },
+                    {
+                        id: 4,
+                        name: 'HR Officer',
+                        email: 'hr.officer@kcca.go.ug',
+                        role: 'hr',
+                        department: 'Payroll',
+                        status: 'active'
+                    }
+                ];
+                
+                // Load audit logs
+                auditLogs = [
+                    {
+                        id: 1,
+                        timestamp: '2023-06-15 09:30',
+                        user: 'System Admin',
+                        action: 'User Created',
+                        details: 'Created user John Doe (Intern)'
+                    },
+                    {
+                        id: 2,
+                        timestamp: '2023-06-15 09:15',
+                        user: 'System Admin',
+                        action: 'Department Updated',
+                        details: 'Updated Software Development department'
+                    }
+                ];
+                
+                // Update supervisors list
+                supervisors = users.filter(user => user.role === 'supervisor');
+                
+                // Render all data
+                renderUsersTable();
+                renderDepartmentsTable();
+                renderAuditLogs();
+                updateDashboardStats();
+                
+                // Populate department dropdowns
+                populateDepartmentDropdowns();
+                populateSupervisorDropdowns();
+            }, 500);
+        }
+
+        function setupEventListeners() {
+            // Add User
+            document.getElementById('addUserBtn').addEventListener('click', function() {
+                document.getElementById('userForm').reset();
+                new bootstrap.Modal(document.getElementById('addUserModal')).show();
+            });
+            
+            // Add Department
+            document.getElementById('addDepartmentBtn').addEventListener('click', function() {
+                document.getElementById('departmentForm').reset();
+                new bootstrap.Modal(document.getElementById('addDepartmentModal')).show();
+            });
+            
+            // Generate Password
+            document.getElementById('generatePassword').addEventListener('click', function() {
+                document.getElementById('userPassword').value = generateRandomPassword();
+            });
+            
+            // Form Submissions
+            document.getElementById('userForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewUser();
+            });
+            
+            document.getElementById('editUserForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateUser();
+            });
+            
+            document.getElementById('departmentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewDepartment();
+            });
+            
+            // Reset Password
+            document.getElementById('resetPasswordBtn').addEventListener('click', resetUserPassword);
+            
+            // Refresh Users
+            document.getElementById('refreshUsers').addEventListener('click', function() {
+                renderUsersTable();
+            });
+            
+            // Logout
+            document.getElementById('logoutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Are you sure you want to logout?')) {
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+
+        function renderUsersTable() {
+            const tableBody = document.getElementById('usersTableBody');
+            tableBody.innerHTML = '';
+            
+            users.forEach(user => {
+                const supervisor = user.supervisor ? 
+                    users.find(u => u.id === user.supervisor)?.name : 'Not assigned';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="avatar me-2">${user.name.charAt(0)}</div>
+                            ${user.name}
+                        </div>
+                    </td>
+                    <td>${user.email}</td>
+                    <td><span class="badge bg-light text-dark">${formatRole(user.role)}</span></td>
+                    <td>${user.department}</td>
+                    <td><span class="badge badge-status ${getStatusBadgeClass(user.status)}">${formatStatus(user.status)}</span></td>
+                    <td>
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-outline-primary me-1 edit-btn" data-id="${user.id}">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${user.id}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+            
+            // Add event listeners to action buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = parseInt(this.getAttribute('data-id'));
+                    editUser(userId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = parseInt(this.getAttribute('data-id'));
+                    deleteUser(userId);
+                });
+            });
+        }
+
+        function renderDepartmentsTable() {
+            const tableBody = document.getElementById('departmentsTableBody');
+            tableBody.innerHTML = '';
+            
+            departments.forEach(dept => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${dept.division}</td>
+                    <td>${dept.directorate}</td>
+                    <td>${dept.department}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1 edit-dept-btn" data-id="${dept.id}">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger delete-dept-btn" data-id="${dept.id}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function renderAuditLogs() {
+            const tableBody = document.getElementById('auditLogsTableBody');
+            tableBody.innerHTML = '';
+            
+            auditLogs.forEach(log => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${log.timestamp}</td>
+                    <td>${log.user}</td>
+                    <td>${log.action}</td>
+                    <td>${log.details}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function populateDepartmentDropdowns() {
+            const deptSelects = [
+                document.getElementById('userDepartment'),
+                document.getElementById('editUserDepartment')
+            ];
+            
+            deptSelects.forEach(select => {
+                select.innerHTML = '<option value="">Select Department</option>';
+                departments.forEach(dept => {
+                    const option = document.createElement('option');
+                    option.value = dept.department;
+                    option.textContent = `${dept.department} (${dept.division})`;
+                    select.appendChild(option);
+                });
+            });
+        }
+
+        function populateSupervisorDropdowns() {
+            const supervisorSelects = [
+                document.getElementById('userSupervisor'),
+                document.getElementById('editUserSupervisor')
+            ];
+            
+            supervisorSelects.forEach(select => {
+                select.innerHTML = '<option value="">Select Supervisor (if intern)</option>';
+                supervisors.forEach(supervisor => {
+                    const option = document.createElement('option');
+                    option.value = supervisor.id;
+                    option.textContent = supervisor.name;
+                    select.appendChild(option);
+                });
+            });
+        }
+
+        function addNewUser() {
+            const newUser = {
+                name: document.getElementById('userName').value,
+                email: document.getElementById('userEmail').value,
+                role: document.getElementById('userRole').value,
+                department: document.getElementById('userDepartment').value,
+                supervisor: document.getElementById('userSupervisor').value || null,
+                status: 'active'
+            };
+            
+            // Simulate API call
+            setTimeout(() => {
+                newUser.id = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+                users.push(newUser);
+                
+                // Update supervisors list if new user is a supervisor
+                if (newUser.role === 'supervisor') {
+                    supervisors.push(newUser);
+                    populateSupervisorDropdowns();
+                }
+                
+                // Add to audit log
+                auditLogs.unshift({
+                    id: auditLogs.length + 1,
+                    timestamp: new Date().toISOString(),
+                    user: 'System Admin',
+                    action: 'User Created',
+                    details: `Created user ${newUser.name} (${formatRole(newUser.role)})`
+                });
+                
+                renderUsersTable();
+                renderAuditLogs();
+                updateDashboardStats();
+                
+                alert('User created successfully!');
+                bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+            }, 500);
+        }
+
+        function editUser(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            document.getElementById('editUserId').value = user.id;
+            document.getElementById('editUserName').value = user.name;
+            document.getElementById('editUserEmail').value = user.email;
+            document.getElementById('editUserRole').value = user.role;
+            document.getElementById('editUserDepartment').value = user.department;
+            document.getElementById('editUserSupervisor').value = user.supervisor || '';
+            document.getElementById('editUserStatus').value = user.status;
+            
+            new bootstrap.Modal(document.getElementById('editUserModal')).show();
+        }
+
+        function updateUser() {
+            const userId = parseInt(document.getElementById('editUserId').value);
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const oldRole = user.role;
+            const oldSupervisor = user.supervisor;
+            
+            user.name = document.getElementById('editUserName').value;
+            user.email = document.getElementById('editUserEmail').value;
+            user.role = document.getElementById('editUserRole').value;
+            user.department = document.getElementById('editUserDepartment').value;
+            user.supervisor = document.getElementById('editUserSupervisor').value || null;
+            user.status = document.getElementById('editUserStatus').value;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Update supervisors list if role changed
+                if (oldRole !== user.role) {
+                    if (user.role === 'supervisor') {
+                        supervisors.push(user);
+                    } else if (oldRole === 'supervisor') {
+                        supervisors = supervisors.filter(s => s.id !== user.id);
+                    }
+                    populateSupervisorDropdowns();
+                }
+                
+                // Add to audit log
+                auditLogs.unshift({
+                    id: auditLogs.length + 1,
+                    timestamp: new Date().toISOString(),
+                    user: 'System Admin',
+                    action: 'User Updated',
+                    details: `Updated user ${user.name} (${formatRole(user.role)})`
+                });
+                
+                renderUsersTable();
+                renderAuditLogs();
+                updateDashboardStats();
+                
+                alert('User updated successfully!');
+                bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
+            }, 500);
+        }
+
+        function deleteUser(userId) {
+            if (!confirm('Are you sure you want to delete this user?')) return;
+            
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            // Simulate API call
+            setTimeout(() => {
+                users = users.filter(u => u.id !== userId);
+                
+                // Remove from supervisors list if needed
+                if (user.role === 'supervisor') {
+                    supervisors = supervisors.filter(s => s.id !== userId);
+                    populateSupervisorDropdowns();
+                }
+                
+                // Add to audit log
+                auditLogs.unshift({
+                    id: auditLogs.length + 1,
+                    timestamp: new Date().toISOString(),
+                    user: 'System Admin',
+                    action: 'User Deleted',
+                    details: `Deleted user ${user.name} (${formatRole(user.role)})`
+                });
+                
+                renderUsersTable();
+                renderAuditLogs();
+                updateDashboardStats();
+                
+                alert('User deleted successfully!');
+            }, 500);
+        }
+
+        function addNewDepartment() {
+            const newDept = {
+                division: document.getElementById('divisionName').value,
+                directorate: document.getElementById('directorateName').value,
+                department: document.getElementById('departmentName').value
+            };
+            
+            // Simulate API call
+            setTimeout(() => {
+                newDept.id = departments.length > 0 ? Math.max(...departments.map(d => d.id)) + 1 : 1;
+                departments.push(newDept);
+                
+                // Add to audit log
+                auditLogs.unshift({
+                    id: auditLogs.length + 1,
+                    timestamp: new Date().toISOString(),
+                    user: 'System Admin',
+                    action: 'Department Added',
+                    details: `Added department ${newDept.department}`
+                });
+                
+                renderDepartmentsTable();
+                renderAuditLogs();
+                populateDepartmentDropdowns();
+                
+                alert('Department added successfully!');
+                bootstrap.Modal.getInstance(document.getElementById('addDepartmentModal')).hide();
+            }, 500);
+        }
+
+        function resetUserPassword() {
+            const userId = parseInt(document.getElementById('editUserId').value);
+            const newPassword = generateRandomPassword();
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Add to audit log
+                const user = users.find(u => u.id === userId);
+                auditLogs.unshift({
+                    id: auditLogs.length + 1,
+                    timestamp: new Date().toISOString(),
+                    user: 'System Admin',
+                    action: 'Password Reset',
+                    details: `Reset password for ${user.name}`
+                });
+                
+                renderAuditLogs();
+                alert(`Password for ${user.name} has been reset to: ${newPassword}`);
+            }, 500);
+        }
+
+        function updateDashboardStats() {
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('activeInterns').textContent = 
+                users.filter(u => u.role === 'intern' && u.status === 'active').length;
+        }
+
+        // Helper functions
+        function formatRole(role) {
+            const roles = {
+                'intern': 'Intern',
+                'supervisor': 'Supervisor',
+                'hr': 'HR',
+                'admin': 'System Admin'
+            };
+            return roles[role] || role;
+        }
+
+        function formatStatus(status) {
+            const statuses = {
+                'active': 'Active',
+                'inactive': 'Inactive',
+                'pending': 'Pending'
+            };
+            return statuses[status] || status;
+        }
+
+        function getStatusBadgeClass(status) {
+            const classes = {
+                'active': 'badge-active',
+                'inactive': 'badge-inactive',
+                'pending': 'badge-pending'
+            };
+            return classes[status] || 'badge-secondary';
+        }
+
+        function generateRandomPassword() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+            let password = '';
+            for (let i = 0; i < 12; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return password;
+        }
+
+        // Update last sync time
+        function updateLastSync() {
+            const now = new Date();
+            document.getElementById('lastSync').textContent = 
+                now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+        
+        setInterval(updateLastSync, 60000);
+        updateLastSync();
+    </script>
+</body>
+</html>
